@@ -114,6 +114,32 @@
       width: 44%;
     }
   }
+.font-credit {
+  margin-top: 40px;
+  padding: 12px 20px 24px;
+  font-size: 14px;
+  color: #444;
+  text-align: center;
+}
+
+.font-credit a {
+  color: #b45a20;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.font-credit a:hover {
+  text-decoration: underline;
+}
+
+/* 横持ちでも邪魔にならない */
+@media screen and (max-height: 500px) {
+  .font-credit {
+    font-size: 12px;
+    padding-bottom: 12px;
+  }
+}
+
 </style>
 
 
@@ -135,6 +161,18 @@
 
     <button class="reset" onclick="resetCounters()">リセット</button>
   </div>
+<footer class="font-credit">
+  <p>
+    Font: “Super Mario Maker Extended” by Dale Thiessen.<br>
+    Licensed under
+    <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">
+      CC BY-NC-SA 3.0
+    </a>.
+    <a href="https://fontstruct.com/fontstructions/show/1184080" target="_blank">
+      View on Fontstruct
+    </a>
+  </p>
+</footer>
 
   <script>
     const counterNames = [
