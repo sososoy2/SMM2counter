@@ -43,7 +43,7 @@
       flex-wrap: wrap;
       justify-content: space-between;
       width: 100%;
-      padding: 0 24px;
+      padding: 0 60px;
       box-sizing: border-box;
     }
 
@@ -52,7 +52,7 @@
       border-radius: 18px;
       padding: 28px;
       margin-bottom: 28px;
-      width: 44%;
+      width: 46%;
       box-shadow: 0 6px 14px rgba(0,0,0,0.3);
       box-sizing: border-box;
     }
@@ -226,7 +226,7 @@
         calculateWinRate().toFixed(2) + "%";
     }
 
-    /* ★ clickではなく pointerdown（即反応） */
+    /* clickではないpointerdown */
     document.getElementById("counters").addEventListener("pointerdown", (e) => {
       const btn = e.target.closest("button");
       if (!btn) return;
@@ -249,4 +249,3 @@
   </script>
 </body>
 </html>
-
