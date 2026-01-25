@@ -4,146 +4,152 @@
   <meta charset="UTF-8" />
   <title>SMM2 Counter!</title>
 
-<style>
-  @font-face {
-    font-family: "smm";
-    src: url("./fonts/smm.ttf");
-  }
+  <!-- ★ タップ遅延対策（最重要） -->
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-  body {
-    margin: 0;
-    background: #ffd700;
-    font-family: sans-serif;
-  }
+  <style>
+    @font-face {
+      font-family: "smm";
+      src: url("./fonts/smm.ttf");
+    }
 
-  .container {
-    padding-top: 80px;
-    text-align: center;
-  }
+    body {
+      margin: 0;
+      background: #ffd700;
+      font-family: sans-serif;
+    }
 
-  /* ===== タイトル ===== */
-  .title {
-    font-size: 48px;       /* 横持ちサイズ */
-    font-weight: bold;
-    font-family: smm;
-    letter-spacing: -4px;
-    margin-bottom: 40px;
-  }
-
-  .red {
-    color: #dd0000;
-  }
-
-  /* ===== カウンターエリア ===== */
-  .counter-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0 24px;
-    box-sizing: border-box;
-  }
-
-  .counter {
-    background: #fff;
-    border-radius: 18px;
-    padding: 28px;
-    margin-bottom: 28px;
-    width: 44%;            /* ← 横幅は細めで2列 */
-    box-shadow: 0 6px 14px rgba(0,0,0,0.3);
-    box-sizing: border-box;
-  }
-
-  .label {
-    font-size: 24px;
-    color: #666;
-  }
-
-  .count {
-    font-size: 36px;       /* 数字はドーン */
-    margin: 14px 0;
-    font-family: smm;
-  }
-
-  /* ===== ボタン ===== */
-  .buttons {
-    display: flex;
-  }
-
-  button {
-    flex: 1;
-    margin: 0 10px;
-    padding: 20px;
-    font-size: 36px;
-    font-weight: bold;
-    border: none;
-    border-radius: 12px;
-    background: #b45a20;
-    color: #fff;
-  }
-
-  /* ===== 勝率 ===== */
-  .winrate {
-    font-size: 34px;
-    font-weight: bold;
-    margin: 30px 0;
-  }
-
-  .winrate span {
-    color: #e74c3c;
-    font-family: smm;
-    font-size: 40px;
-  }
-
-  /* ===== リセット ===== */
-  .reset {
-    background: #666;
-    padding: 24px 60px;
-    border-radius: 16px;
-    margin-top: 20px;
-    font-size: 26px;
-  }
-
-  /* ===== スマホ横持ち想定 ===== */
-  @media screen and (max-height: 500px) {
     .container {
-      padding-top: 40px;
+      padding-top: 80px;
+      text-align: center;
+    }
+
+    /* ===== タイトル ===== */
+    .title {
+      font-size: 48px;
+      font-weight: bold;
+      font-family: smm;
+      letter-spacing: -4px;
+      margin-bottom: 40px;
+    }
+
+    .red {
+      color: #dd0000;
+    }
+
+    /* ===== カウンターエリア ===== */
+    .counter-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 24px;
+      box-sizing: border-box;
     }
 
     .counter {
+      background: #fff;
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 28px;
       width: 44%;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+      box-sizing: border-box;
     }
-  }
-.font-credit {
-  margin-top: 40px;
-  padding: 12px 20px 24px;
-  font-size: 14px;
-  color: #444;
-  text-align: center;
-}
 
-.font-credit a {
-  color: #b45a20;
-  font-weight: bold;
-  text-decoration: none;
-}
+    .label {
+      font-size: 24px;
+      color: #666;
+    }
 
-.font-credit a:hover {
-  text-decoration: underline;
-}
+    .count {
+      font-size: 36px;
+      margin: 14px 0;
+      font-family: smm;
+    }
 
-/* 横持ちでも邪魔にならない */
-@media screen and (max-height: 500px) {
-  .font-credit {
-    font-size: 12px;
-    padding-bottom: 12px;
-  }
-}
+    /* ===== ボタン ===== */
+    .buttons {
+      display: flex;
+    }
 
-</style>
+    button {
+      flex: 1;
+      margin: 0 10px;
+      padding: 20px;
+      font-size: 36px;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      background: #b45a20;
+      color: #fff;
 
+      /* ★ タッチ最適化 */
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
 
+    button:active {
+      transform: scale(0.95);
+    }
 
+    /* ===== 勝率 ===== */
+    .winrate {
+      font-size: 34px;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+
+    .winrate span {
+      color: #e74c3c;
+      font-family: smm;
+      font-size: 40px;
+    }
+
+    /* ===== リセット ===== */
+    .reset {
+      background: #666;
+      padding: 24px 60px;
+      border-radius: 16px;
+      margin-top: 20px;
+      font-size: 26px;
+    }
+
+    /* ===== フォントクレジット ===== */
+    .font-credit {
+      margin-top: 40px;
+      padding: 12px 20px 24px;
+      font-size: 14px;
+      color: #444;
+      text-align: center;
+    }
+
+    .font-credit a {
+      color: #b45a20;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .font-credit a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== スマホ横持ち ===== */
+    @media screen and (max-height: 500px) {
+      .container {
+        padding-top: 40px;
+      }
+
+      .counter {
+        width: 44%;
+      }
+
+      .font-credit {
+        font-size: 12px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -161,18 +167,21 @@
 
     <button class="reset" onclick="resetCounters()">リセット</button>
   </div>
-<footer class="font-credit">
-  <p>
-    Font: “Super Mario Maker Extended” by Dale Thiessen.<br>
-    Licensed under
-    <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">
-      CC BY-NC-SA 3.0
-    </a>.
-    <a href="https://fontstruct.com/fontstructions/show/1184080" target="_blank">
-      View on Fontstruct
-    </a>
-  </p>
-</footer>
+
+  <footer class="font-credit">
+    <p>
+      Font: “Super Mario Maker Extended” by Dale Thiessen.<br>
+      Licensed under
+      <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">
+        CC BY-NC-SA 3.0
+      </a>.
+      <a href="https://fontstruct.com/fontstructions/show/1184080" target="_blank">
+        View on Fontstruct
+      </a>
+      <br><br>
+      ※woff2から.ttfに変換しています。
+    </p>
+  </footer>
 
   <script>
     const counterNames = [
@@ -206,8 +215,8 @@
           <div class="label">${counterNames[index]}</div>
           <div class="count">${count}</div>
           <div class="buttons">
-            <button onclick="increment(${index})">+</button>
-            <button onclick="decrement(${index})">-</button>
+            <button data-index="${index}" data-type="inc">+</button>
+            <button data-index="${index}" data-type="dec">-</button>
           </div>
         `;
 
@@ -218,15 +227,18 @@
         calculateWinRate().toFixed(2) + "%";
     }
 
-    function increment(i) {
-      counters[i]++;
-      render();
-    }
+    document.getElementById("counters").addEventListener("pointerdown", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
 
-    function decrement(i) {
-      if (counters[i] > 0) counters[i]--;
+      const index = Number(btn.dataset.index);
+      const type = btn.dataset.type;
+
+      if (type === "inc") counters[index]++;
+      if (type === "dec" && counters[index] > 0) counters[index]--;
+
       render();
-    }
+    });
 
     function resetCounters() {
       counters = Array(counterNames.length).fill(0);
@@ -237,3 +249,4 @@
   </script>
 </body>
 </html>
+
