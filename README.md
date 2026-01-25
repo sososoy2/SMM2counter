@@ -8,5 +8,6 @@
 みんなでバトルの結果に合わせて、ボタンを押してください。
   
 URL:https://sososoy2.github.io/SMM2counter/
-  QR
+<br><br>
+QR
 <img width="252" height="252" alt="Image" src="https://github.com/user-attachments/assets/1591a6bd-44bc-4abb-a0eb-e44f259e481d" />
