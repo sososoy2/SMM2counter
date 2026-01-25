@@ -17,50 +17,49 @@
   }
 
   .container {
-    padding-top: 120px;
+    padding-top: 140px;   /* 全体を少し下げる */
     text-align: center;
   }
 
   .title {
-    font-size: 32px;
+    font-size: 36px;      /* タイトルを大きく */
     font-weight: bold;
     font-family: smm;
     letter-spacing: -3px;
-    margin-bottom: 20px;
+    margin-bottom: 28px;
   }
 
   .red {
     color: #dd0000;
   }
 
-.counter-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 8px;
-  box-sizing: border-box;
-}
+  .counter-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
 
-.counter {
-  background: #fff;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 16px;
-  width: 48%;              /* ← ここ重要 */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  box-sizing: border-box;  /* ← これも重要 */
-}
-
+  .counter {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;        /* 中身を大きく */
+    margin-bottom: 18px;
+    width: 46%;           /* ← 横幅は少し細く */
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+    box-sizing: border-box;
+  }
 
   .label {
-    font-size: 14px;
+    font-size: 18px;      /* ラベル大きく */
     color: #666;
   }
 
   .count {
-    font-size: 18px;
-    margin: 5px 0;
+    font-size: 26px;      /* 数字をかなり大きく */
+    margin: 10px 0;
     font-family: smm;
   }
 
@@ -70,51 +69,44 @@
 
   button {
     flex: 1;
-    margin: 0 4px;
-    padding: 8px;
-    font-size: 20px;
+    margin: 0 6px;
+    padding: 14px;        /* ボタンを大きく */
+    font-size: 26px;
     font-weight: bold;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     background: #b45a20;
     color: #fff;
-    cursor: pointer;
   }
 
   .winrate {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: bold;
-    margin: 10px 0;
+    margin: 20px 0;
   }
 
   .winrate span {
     color: #e74c3c;
     font-family: smm;
-    font-size: 26px;
+    font-size: 30px;
   }
 
   .reset {
     background: #666;
-    padding: 15px 30px;
-    border-radius: 10px;
-    margin-top: 10px;
+    padding: 18px 40px;
+    border-radius: 12px;
+    margin-top: 16px;
+    font-size: 20px;
   }
 
-  /* スマホ向け微調整 */
+  /* スマホ微調整 */
   @media screen and (max-width: 600px) {
-    .title {
-      font-size: 26px;
-    }
-
     .counter {
-      width: calc(50% - 32px); /* スマホでも横2列 */
-    }
-
-    .winrate {
-      font-size: 20px;
+      width: 46%;         /* スマホでも2列維持 */
     }
   }
 </style>
+
 
 </head>
 
