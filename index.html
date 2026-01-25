@@ -1,20 +1,178 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <title>SMM2 Counter!</title>
-    <style>
-      body {
-          background: #ffd700;
-      }
-      .title {
-          font-size: 6em;
-      }
-    </style>
-  </head>
-  <body>
-    <div style="text-align: center;">
-      <span class="title">SMM<span style="color:#ff0a0a;">2</span> Counter!</span>
+<head>
+  <meta charset="UTF-8" />
+  <title>SMM2 Counter!</title>
+
+  <style>
+    @font-face {
+      font-family: "smm";
+      src: url("./assets/fonts/smm.ttf");
+    }
+
+    body {
+      margin: 0;
+      background: #ffd700;
+      font-family: sans-serif;
+    }
+
+    .container {
+      padding-top: 120px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: bold;
+      font-family: smm;
+      letter-spacing: -3px;
+      margin-bottom: 20px;
+    }
+
+    .red {
+      color: #dd0000;
+    }
+
+    .counter-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .counter {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 8px;
+      width: calc(50% - 40px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .label {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .count {
+      font-size: 18px;
+      margin: 5px 0;
+      font-family: smm;
+    }
+
+    .buttons {
+      display: flex;
+    }
+
+    button {
+      flex: 1;
+      margin: 0 4px;
+      padding: 8px;
+      font-size: 20px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      background: #b45a20;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .winrate {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .winrate span {
+      color: #e74c3c;
+      font-family: smm;
+      font-size: 26px;
+    }
+
+    .reset {
+      background: #666;
+      padding: 15px 30px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="title">
+      SMM<span class="red">2</span> Counter!
     </div>
-  </body>
+
+    <div id="counters" class="counter-row"></div>
+
+    <div class="winrate">
+      現在の勝率:
+      <span id="winrate">0.00%</span>
+    </div>
+
+    <button class="reset" onclick="resetCounters()">リセット</button>
+  </div>
+
+  <script>
+    const counterNames = [
+      "試合数",
+      "勝ち",
+      "本負け",
+      "ゴール負け",
+      "無効試合",
+      "ギブアップ"
+    ];
+
+    let counters = Array(counterNames.length).fill(0);
+
+    function calculateWinRate() {
+      const total = counters[0];
+      const wins = counters[1];
+      const invalid = counters[4];
+      if (total - invalid <= 0) return 0;
+      return (wins / (total - invalid)) * 100;
+    }
+
+    function render() {
+      const container = document.getElementById("counters");
+      container.innerHTML = "";
+
+      counters.forEach((count, index) => {
+        const div = document.createElement("div");
+        div.className = "counter";
+
+        div.innerHTML = `
+          <div class="label">${counterNames[index]}</div>
+          <div class="count">${count}</div>
+          <div class="buttons">
+            <button onclick="increment(${index})">+</button>
+            <button onclick="decrement(${index})">-</button>
+          </div>
+        `;
+
+        container.appendChild(div);
+      });
+
+      document.getElementById("winrate").textContent =
+        calculateWinRate().toFixed(2) + "%";
+    }
+
+    function increment(i) {
+      counters[i]++;
+      render();
+    }
+
+    function decrement(i) {
+      if (counters[i] > 0) counters[i]--;
+      render();
+    }
+
+    function resetCounters() {
+      counters = Array(counterNames.length).fill(0);
+      render();
+    }
+
+    render();
+  </script>
+</body>
 </html>
