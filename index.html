@@ -4,9 +4,6 @@
   <meta charset="UTF-8" />
   <title>SMM2 Counter!</title>
 
-  <!-- ★ タップ遅延対策（最重要） -->
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   <style>
     @font-face {
@@ -227,6 +224,7 @@
         calculateWinRate().toFixed(2) + "%";
     }
 
+    /* ★ clickではなく pointerdown（即反応） */
     document.getElementById("counters").addEventListener("pointerdown", (e) => {
       const btn = e.target.closest("button");
       if (!btn) return;
@@ -249,4 +247,3 @@
   </script>
 </body>
 </html>
-
