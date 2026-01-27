@@ -5,8 +5,8 @@
   <link rel="icon" href="./img/icon.png">
   <title>SMM2 Counter! / みんなでバトル用カウンター</title>
 
-<meta name="description" content="マリメ2の「みんなでバトル」の試合数・勝ち・負けを簡単に記録し、勝率を自動計算できる便利ツールです。">
-<meta name="keywords" content="SMM2, スーパーマリオメーカー2, 勝率, カウンター, ゲーム記録, みんバト,みんなでバトル">
+  <meta name="description" content="マリメ2のみんなでバトル用カウンター">
+  <meta name="keywords" content="SMM2,みんなでバトル,カウンター">
 
   <style>
     @font-face {
@@ -25,7 +25,6 @@
       text-align: center;
     }
 
-    /* ===== タイトル ===== */
     .title {
       font-size: 48px;
       font-weight: bold;
@@ -34,18 +33,13 @@
       margin-bottom: 40px;
     }
 
-    .red {
-      color: #dd0000;
-    }
+    .red { color: #dd0000; }
 
-    /* ===== カウンターエリア ===== */
     .counter-row {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      width: 100%;
       padding: 0 60px;
-      box-sizing: border-box;
     }
 
     .counter {
@@ -59,8 +53,14 @@
     }
 
     .label {
-      font-size: 24px;
+      font-size: 22px;
       color: #666;
+    }
+
+    .label input {
+      font-size: 22px;
+      width: 100%;
+      text-align: center;
     }
 
     .count {
@@ -69,32 +69,32 @@
       font-family: smm;
     }
 
-    /* ===== ボタン ===== */
     .buttons {
       display: flex;
     }
 
     button {
       flex: 1;
-      margin: 0 10px;
-      padding: 20px;
-      font-size: 36px;
-      font-weight: bold;
+      margin: 6px;
+      padding: 16px;
+      font-size: 24px;
       border: none;
       border-radius: 12px;
       background: #b45a20;
       color: #fff;
-
-      /* ★ タッチ最適化 */
       touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
     }
 
     button:active {
       transform: scale(0.95);
     }
 
-    /* ===== 勝率 ===== */
+    .edit-buttons button {
+      font-size: 18px;
+      padding: 10px;
+      background: #888;
+    }
+
     .winrate {
       font-size: 34px;
       font-weight: bold;
@@ -107,146 +107,142 @@
       font-size: 40px;
     }
 
-    /* ===== リセット ===== */
     .reset {
       background: #666;
-      padding: 24px 60px;
+      padding: 20px 40px;
       border-radius: 16px;
-      margin-top: 20px;
-      font-size: 26px;
-    }
-
-    /* ===== フォントクレジット ===== */
-    .font-credit {
-      margin-top: 40px;
-      padding: 12px 20px 24px;
-      font-size: 14px;
-      color: #444;
-      text-align: center;
-    }
-
-    .font-credit a {
-      color: #b45a20;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .font-credit a:hover {
-      text-decoration: underline;
-    }
-
-    /* ===== スマホ横持ち ===== */
-    @media screen and (max-height: 500px) {
-      .container {
-        padding-top: 40px;
-      }
-
-      .counter {
-        width: 44%;
-      }
-
-      .font-credit {
-        font-size: 12px;
-      }
+      margin: 10px;
+      font-size: 24px;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="title">
-      SMM<span class="red">2</span> Counter!
-    </div>
-
-    <div id="counters" class="counter-row"></div>
-
-    <div class="winrate">
-      現在の勝率:
-      <span id="winrate">0.00%</span>
-    </div>
-
-    <button class="reset" onclick="resetCounters()">リセット</button>
+<div class="container">
+  <div class="title">
+    SMM<span class="red">2</span> Counter!
   </div>
 
-  <footer class="font-credit">
-    <p>
-      Font: “Super Mario Maker Extended” by Dale Thiessen.<br>
-      Licensed under
-      <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">
-        CC BY-NC-SA 3.0
-      </a>.
-      <a href="https://fontstruct.com/fontstructions/show/1184080" target="_blank">
-        View on Fontstruct
-      </a>
-      <br><br>
-      ※.woff2から.ttf形式に変換して使用しています。
-    </p>
-  </footer>
+  <div id="counters" class="counter-row"></div>
 
-  <script>
-    const counterNames = [
-      "試合数",
-      "勝ち",
-      "本負け",
-      "ゴール負け",
-      "無効試合",
-      "ギブアップ"
-    ];
+  <div class="winrate">
+    現在の勝率:
+    <span id="winrate">0.00%</span>
+  </div>
 
-    let counters = Array(counterNames.length).fill(0);
+  <div>
+    <button class="reset" onclick="resetCounters()">リセット</button>
+    <button class="reset" onclick="toggleEdit()">編集</button>
+  </div>
 
-    function calculateWinRate() {
-      const total = counters[0];
-      const wins = counters[1];
-      const invalid = counters[4];
-      if (total - invalid <= 0) return 0;
-      return (wins / (total - invalid)) * 100;
-    }
+  <div id="addArea"></div>
+</div>
 
-    function render() {
-      const container = document.getElementById("counters");
-      container.innerHTML = "";
+<script>
+  let counters = [
+    { name: "試合数", value: 0 },
+    { name: "勝ち", value: 0 },
+    { name: "本負け", value: 0 },
+    { name: "ゴール負け", value: 0 },
+    { name: "無効試合", value: 0 },
+    { name: "ギブアップ", value: 0 }
+  ];
 
-      counters.forEach((count, index) => {
-        const div = document.createElement("div");
-        div.className = "counter";
+  let editMode = false;
 
-        div.innerHTML = `
-          <div class="label">${counterNames[index]}</div>
-          <div class="count">${count}</div>
-          <div class="buttons">
-            <button data-index="${index}" data-type="inc">+</button>
-            <button data-index="${index}" data-type="dec">-</button>
-          </div>
-        `;
+  function calculateWinRate() {
+    const total = counters.find(c => c.name === "試合数")?.value || 0;
+    const wins  = counters.find(c => c.name === "勝ち")?.value || 0;
+    const invalid = counters.find(c => c.name === "無効試合")?.value || 0;
+    if (total - invalid <= 0) return 0;
+    return (wins / (total - invalid)) * 100;
+  }
 
-        container.appendChild(div);
-      });
+  function render() {
+    const container = document.getElementById("counters");
+    container.innerHTML = "";
 
-      document.getElementById("winrate").textContent =
-        calculateWinRate().toFixed(2) + "%";
-    }
+    counters.forEach((c, i) => {
+      const div = document.createElement("div");
+      div.className = "counter";
 
-    /* clickではないpointerdown */
-    document.getElementById("counters").addEventListener("pointerdown", (e) => {
-      const btn = e.target.closest("button");
-      if (!btn) return;
+      div.innerHTML = `
+        <div class="label">
+          ${editMode
+            ? `<input value="${c.name}" oninput="counters[${i}].name=this.value">`
+            : c.name}
+        </div>
 
-      const index = Number(btn.dataset.index);
-      const type = btn.dataset.type;
+        <div class="count">${c.value}</div>
 
-      if (type === "inc") counters[index]++;
-      if (type === "dec" && counters[index] > 0) counters[index]--;
+        <div class="buttons">
+          <button data-i="${i}" data-t="inc">+</button>
+          <button data-i="${i}" data-t="dec">-</button>
+        </div>
 
-      render();
+        ${editMode ? `
+        <div class="edit-buttons">
+          <button onclick="moveUp(${i})">⬆</button>
+          <button onclick="moveDown(${i})">⬇</button>
+          <button onclick="removeCounter(${i})">❌</button>
+        </div>
+        ` : ""}
+      `;
+
+      container.appendChild(div);
     });
 
-    function resetCounters() {
-      counters = Array(counterNames.length).fill(0);
-      render();
-    }
+    document.getElementById("winrate").textContent =
+      calculateWinRate().toFixed(2) + "%";
+
+    document.getElementById("addArea").innerHTML =
+      editMode ? `<button class="reset" onclick="addCounter()">＋ カウンター追加</button>` : "";
+  }
+
+  document.getElementById("counters").addEventListener("pointerdown", e => {
+    const btn = e.target.closest("button");
+    if (!btn || editMode) return;
+
+    const i = Number(btn.dataset.i);
+    if (btn.dataset.t === "inc") counters[i].value++;
+    if (btn.dataset.t === "dec" && counters[i].value > 0) counters[i].value--;
 
     render();
-  </script>
+  });
+
+  function toggleEdit() {
+    editMode = !editMode;
+    render();
+  }
+
+  function addCounter() {
+    counters.push({ name: "新しいカウンター", value: 0 });
+    render();
+  }
+
+  function removeCounter(i) {
+    counters.splice(i, 1);
+    render();
+  }
+
+  function moveUp(i) {
+    if (i === 0) return;
+    [counters[i-1], counters[i]] = [counters[i], counters[i-1]];
+    render();
+  }
+
+  function moveDown(i) {
+    if (i === counters.length - 1) return;
+    [counters[i+1], counters[i]] = [counters[i], counters[i+1]];
+    render();
+  }
+
+  function resetCounters() {
+    counters.forEach(c => c.value = 0);
+    render();
+  }
+
+  render();
+</script>
 </body>
 </html>
