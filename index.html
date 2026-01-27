@@ -5,8 +5,28 @@
   <link rel="icon" href="./img/icon.png">
   <title>SMM2 Counter! / みんなでバトル用カウンター</title>
 
-  <meta name="description" content="マリメ2のみんなでバトル用カウンター">
-  <meta name="keywords" content="SMM2,みんなでバトル,カウンター">
+  <meta name="description" content="
+スーパーマリオメーカー2（SMM2）の「みんなでバトル」用カウンター。
+試合数・勝利数・勝率をリアルタイムで管理でき、配信や対戦の記録に最適な無料ツール。
+">
+  <meta name="keywords" content="SMM2,スーパーマリオメーカー2,マリオメーカー2,Super Mario Maker 2,みんなでバトル,みんバト,みんなでバトル カウンター,SMM2 カウンター,勝率 カウンター,戦績 カウンター,対戦 カウンター,試合数 カウンター,配信 用 カウンター,配信 ツール,ゲーム カウンター,戦績 管理,勝率 計算,マリメ2,マリメ2 みんなでバトル,マリメ2 カウンター">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SMM2 Counter",
+  "url": "https://sososoy2.github.io/SMM2counter/", 
+  "applicationCategory": "GameApplication",
+  "description": "スーパーマリオメーカー2（SMM2）のみんなでバトル用カウンター。試合数・勝率・戦績を管理可能な無料ツール。",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "JPY"
+  }
+}
+</script>
 
   <style>
     @font-face {
@@ -26,7 +46,7 @@
     }
 
     .title {
-      font-size: 48px;
+      font-size: 1.4em;
       font-weight: bold;
       font-family: smm;
       letter-spacing: -4px;
@@ -134,7 +154,7 @@
 <body>
 <div class="container">
   <div class="title">
-    SMM<span class="red">2</span> Counter!
+    <h1>SMM<span class="red">2</span> Counter!</h1>
   </div>
 
   <div id="counters" class="counter-row"></div>
@@ -145,6 +165,20 @@
   </div>
 
   <div id="editArea"></div>
+<div class="usage-container">
+  <button class="reset" onclick="toggleUsage()">📖 使い方を表示 / 非表示</button>
+  <div id="usageContent" style="display:none; text-align:left; max-width:800px; margin:16px auto; background:#fff3b0; padding:16px; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.2);">
+    <h2>使い方</h2>
+    <ol>
+      <li>「編集」ボタンを押してカウンターを追加・削除できます。</li>
+      <li>カウンターの値は「＋」「−」ボタンで増減できます。</li>
+      <li>「変更を保存」でCookieに保存され、ページを閉じても値が保持されます。</li>
+      <li>「キャンセル」で編集中の変更を破棄できます。</li>
+      <li>「初期値に戻す」で全てのカウンターを初期状態にリセットします。</li>
+      <li>「リセット」ボタンで現在の値を0に戻せます。</li>
+    </ol>
+  </div>
+</div>
 </div>
 
 <footer class="font-credit">
@@ -163,6 +197,10 @@
 </footer>
 
 <script>
+  function toggleUsage() {
+    const content = document.getElementById("usageContent");
+    content.style.display = content.style.display === "none" ? "block" : "none";
+  }
   const initialCounters = [
     { name: "試合数", value: 0 },
     { name: "勝ち", value: 0 },
