@@ -9,16 +9,16 @@
 スーパーマリオメーカー2（SMM2）の「みんなでバトル」用カウンター。
 試合数・勝利数・勝率をリアルタイムで管理でき、配信や対戦の記録に最適な無料ツール。
 ">
-  <meta name="keywords" content="SMM2,スーパーマリオメーカー2,マリオメーカー2,Super Mario Maker 2,みんなでバトル,みんバト,みんなでバトル カウンター,SMM2 カウンター,勝率 カウンター,戦績 カウンター,対戦 カウンター,試合数 カウンター,配信 用 カウンター,配信 ツール,ゲーム カウンター,戦績 管理,勝率 計算,マリメ2,マリメ2 みんなでバトル,マリメ2 カウンター">
+  <meta name="keywords" content="SMM2,スーパーマリオメーカー2,マリオメーカー2,Super Mario Maker 2,みんなでバトル,みんバト,勝率 カウンター">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "SMM2 Counter",
-  "url": "https://sososoy2.github.io/SMM2counter/", 
+  "url": "https://sososoy2.github.io/SMM2counter/",
   "applicationCategory": "GameApplication",
-  "description": "スーパーマリオメーカー2（SMM2）のみんなでバトル用カウンター。試合数・勝率・戦績を管理可能な無料ツール。",
+  "description": "SMM2 みんなでバトル用カウンター",
   "operatingSystem": "All",
   "offers": {
     "@type": "Offer",
@@ -28,127 +28,136 @@
 }
 </script>
 
-  <style>
-    @font-face {
-      font-family: "smm";
-      src: url("./fonts/smm.ttf");
-    }
+<style>
+@font-face {
+  font-family: "smm";
+  src: url("./fonts/smm.ttf");
+}
 
-    body {
-      margin: 0;
-      background: #ffd700;
-      font-family: sans-serif;
-    }
+body {
+  margin: 0;
+  background: #ffd700;
+  font-family: sans-serif;
+}
 
-    .container {
-      padding-top: 80px;
-      text-align: center;
-    }
+.container {
+  padding-top: 80px;
+  text-align: center;
+}
 
-    .title {
-      font-size: 1.4em;
-      font-weight: bold;
-      font-family: smm;
-      letter-spacing: -4px;
-      margin-bottom: 40px;
-    }
+.title {
+  font-size: 1.4em;
+  font-weight: bold;
+  font-family: smm;
+  letter-spacing: -4px;
+  margin-bottom: 40px;
+}
 
-    .red { color: #dd0000; }
+.red { color: #dd0000; }
 
-    .counter-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      padding: 0 60px;
-    }
+.counter-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 60px;
+}
 
-    .counter {
-      background: #fff;
-      border-radius: 18px;
-      padding: 28px;
-      margin-bottom: 28px;
-      width: 46%;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
-      box-sizing: border-box;
-    }
+.counter {
+  background: #fff;
+  border-radius: 18px;
+  padding: 28px;
+  margin-bottom: 28px;
+  width: 46%;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+  box-sizing: border-box;
+}
 
-    .label {
-      font-size: 22px;
-      color: #666;
-    }
+.label {
+  font-size: 22px;
+  color: #666;
+}
 
-    .label input {
-      font-size: 22px;
-      width: 100%;
-      text-align: center;
-    }
+.label input {
+  font-size: 22px;
+  width: 100%;
+  text-align: center;
+}
 
-    .count {
-      font-size: 36px;
-      margin: 14px 0;
-      font-family: smm;
-    }
+.count {
+  font-size: 36px;
+  margin: 14px 0;
+  font-family: smm;
+}
 
-    .buttons {
-      display: flex;
-    }
+.buttons {
+  display: flex;
+}
 
-    button {
-      flex: 1;
-      margin: 6px;
-      padding: 16px;
-      font-size: 24px;
-      border: none;
-      border-radius: 12px;
-      background: #b45a20;
-      color: #fff;
-      touch-action: manipulation;
-    }
+button {
+  flex: 1;
+  margin: 6px;
+  padding: 16px;
+  font-size: 24px;
+  border: none;
+  border-radius: 12px;
+  background: #b45a20;
+  color: #fff;
+  touch-action: manipulation;
+}
 
-    button:active {
-      transform: scale(0.95);
-    }
+button:active {
+  transform: scale(0.95);
+}
 
-    .edit-buttons button {
-      font-size: 18px;
-      padding: 10px;
-      background: #888;
-    }
+.edit-buttons button {
+  font-size: 18px;
+  padding: 10px;
+  background: #888;
+}
 
-    .reset {
-      background: #666;
-      padding: 16px;
-      border-radius: 14px;
-      font-size: 20px;
-      min-width: 160px;
-    }
+.reset {
+  background: #666;
+  padding: 16px;
+  border-radius: 14px;
+  font-size: 20px;
+  min-width: 160px;
+}
 
-    .edit-row {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-    }
+.edit-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
 
-    .font-credit {
-      margin-top: 40px;
-      padding: 12px 20px 24px;
-      font-size: 14px;
-      color: #444;
-      text-align: center;
-    }
+/* ===== 勝率 ===== */
+.winrate {
+  font-size: 34px;
+  font-weight: bold;
+  margin: 30px 0;
+}
 
-    .font-credit a {
-      color: #b45a20;
-      font-weight: bold;
-      text-decoration: none;
-    }
+.winrate span {
+  color: #e74c3c;
+  font-family: smm;
+  font-size: 40px;
+}
 
-    .font-credit a:hover {
-      text-decoration: underline;
-    }
-  </style>
+.font-credit {
+  margin-top: 40px;
+  padding: 12px 20px 24px;
+  font-size: 14px;
+  color: #444;
+  text-align: center;
+}
+
+.font-credit a {
+  color: #b45a20;
+  font-weight: bold;
+  text-decoration: none;
+}
+</style>
 </head>
 
 <body>
@@ -159,26 +168,18 @@
 
   <div id="counters" class="counter-row"></div>
 
+  <!-- 勝率表示 -->
+  <div class="winrate">
+    現在の勝率:
+    <span id="winrate">0.00%</span>
+  </div>
+
   <div class="edit-row">
     <button class="reset" onclick="resetCounters()">リセット</button>
     <button class="reset" onclick="toggleEdit()">編集</button>
   </div>
 
   <div id="editArea"></div>
-<div class="usage-container">
-  <button class="reset" onclick="toggleUsage()">📖 使い方を表示 / 非表示</button>
-  <div id="usageContent" style="display:none; text-align:left; max-width:800px; margin:16px auto; background:#fff3b0; padding:16px; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.2);">
-    <h2>使い方</h2>
-    <ol>
-      <li>「編集」ボタンを押してカウンターを追加・削除できます。</li>
-      <li>カウンターの値は「＋」「−」ボタンで増減できます。</li>
-      <li>「変更を保存」でCookieに保存され、ページを閉じても値が保持されます。</li>
-      <li>「キャンセル」で編集中の変更を破棄できます。</li>
-      <li>「初期値に戻す」で全てのカウンターを初期状態にリセットします。</li>
-      <li>「リセット」ボタンで現在の値を0に戻せます。</li>
-    </ol>
-  </div>
-</div>
 </div>
 
 <footer class="font-credit">
@@ -188,157 +189,103 @@
     <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">
       CC BY-NC-SA 3.0
     </a>.
-    <a href="https://fontstruct.com/fontstructions/show/1184080" target="_blank">
-      View on Fontstruct
-    </a>
-    <br><br>
-    ※.woff2から.ttf形式に変換して使用しています。
   </p>
 </footer>
 
 <script>
-  function toggleUsage() {
-    const content = document.getElementById("usageContent");
-    content.style.display = content.style.display === "none" ? "block" : "none";
-  }
-  const initialCounters = [
-    { name: "試合数", value: 0 },
-    { name: "勝ち", value: 0 },
-    { name: "本負け", value: 0 },
-    { name: "ゴール負け", value: 0 },
-    { name: "無効試合", value: 0 },
-    { name: "ギブアップ", value: 0 }
-  ];
+const initialCounters = [
+  { name: "試合数", value: 0 },
+  { name: "勝ち", value: 0 },
+  { name: "本負け", value: 0 },
+  { name: "ゴール負け", value: 0 },
+  { name: "無効試合", value: 0 },
+  { name: "ギブアップ", value: 0 }
+];
 
-  let counters = JSON.parse(JSON.stringify(initialCounters));
-  let editMode = false;
-  let backupCounters = null;
+let counters = JSON.parse(JSON.stringify(initialCounters));
+let editMode = false;
+let backupCounters = null;
 
-  function saveToCookie() {
-    document.cookie =
-      "smm2Counters=" +
-      encodeURIComponent(JSON.stringify(counters)) +
-      "; max-age=31536000; path=/";
-  }
+function calculateWinRate() {
+  const total = counters.find(c => c.name === "試合数")?.value ?? 0;
+  const wins = counters.find(c => c.name === "勝ち")?.value ?? 0;
+  const invalid = counters.find(c => c.name === "無効試合")?.value ?? 0;
+  if (total - invalid <= 0) return 0;
+  return (wins / (total - invalid)) * 100;
+}
 
-  function deleteCookie() {
-    document.cookie = "smm2Counters=; max-age=0; path=/";
-  }
+function render() {
+  const container = document.getElementById("counters");
+  container.innerHTML = "";
 
-  function loadFromCookie() {
-    const m = document.cookie.match(/smm2Counters=([^;]+)/);
-    if (m) counters = JSON.parse(decodeURIComponent(m[1]));
-  }
-
-  function render() {
-    const container = document.getElementById("counters");
-    container.innerHTML = "";
-
-    counters.forEach((c, i) => {
-      const div = document.createElement("div");
-      div.className = "counter";
-      div.innerHTML = `
-        <div class="label">
-          ${editMode
-            ? `<input value="${c.name}" oninput="counters[${i}].name=this.value">`
-            : c.name}
-        </div>
-        <div class="count">${c.value}</div>
-        <div class="buttons">
-          <button data-i="${i}" data-t="inc">+</button>
-          <button data-i="${i}" data-t="dec">-</button>
-        </div>
-        ${editMode ? `
-          <div class="edit-row edit-buttons">
-            <button onclick="moveUp(${i})">⬆</button>
-            <button onclick="moveDown(${i})">⬇</button>
-            <button onclick="removeCounter(${i})">❌</button>
-          </div>` : ""}
-      `;
-      container.appendChild(div);
-    });
-
-    document.getElementById("editArea").innerHTML = editMode ? `
-      <div class="edit-row">
-        <button class="reset" onclick="addCounter()">＋ カウンター追加</button>
+  counters.forEach((c, i) => {
+    const div = document.createElement("div");
+    div.className = "counter";
+    div.innerHTML = `
+      <div class="label">
+        ${editMode
+          ? `<input value="${c.name}" oninput="counters[${i}].name=this.value">`
+          : c.name}
       </div>
-      <div class="edit-row">
-        <button class="reset" onclick="saveEdit()">変更を保存</button>
-        <button class="reset" onclick="cancelEdit()">キャンセル</button>
-        <button class="reset" onclick="resetToInitial()">初期値に戻す</button>
+      <div class="count">${c.value}</div>
+      <div class="buttons">
+        <button data-i="${i}" data-t="inc">+</button>
+        <button data-i="${i}" data-t="dec">-</button>
       </div>
-    ` : "";
-  }
-
-  document.getElementById("counters").addEventListener("pointerdown", e => {
-    const btn = e.target.closest("button");
-    if (!btn || editMode) return;
-    const i = Number(btn.dataset.i);
-    if (btn.dataset.t === "inc") counters[i].value++;
-    if (btn.dataset.t === "dec" && counters[i].value > 0) counters[i].value--;
-    render();
+      ${editMode ? `
+        <div class="edit-row edit-buttons">
+          <button onclick="moveUp(${i})">⬆</button>
+          <button onclick="moveDown(${i})">⬇</button>
+          <button onclick="removeCounter(${i})">❌</button>
+        </div>` : ""}
+    `;
+    container.appendChild(div);
   });
 
-  function toggleEdit() {
-    if (editMode) return;
-    backupCounters = JSON.parse(JSON.stringify(counters));
-    editMode = true;
-    render();
+  const winrateEl = document.getElementById("winrate");
+  if (winrateEl) {
+    winrateEl.textContent = calculateWinRate().toFixed(2) + "%";
   }
+}
 
-  function saveEdit() {
-    saveToCookie();
-    editMode = false;
-    backupCounters = null;
-    render();
-  }
-
-  function cancelEdit() {
-    counters = JSON.parse(JSON.stringify(backupCounters));
-    editMode = false;
-    backupCounters = null;
-    render();
-  }
-
-  function resetCounters() {
-    counters.forEach(c => c.value = 0);
-    saveToCookie();
-    render();
-  }
-
-  function resetToInitial() {
-    if (!confirm("初期状態に戻しますか？")) return;
-    counters = JSON.parse(JSON.stringify(initialCounters));
-    deleteCookie();
-    editMode = false;
-    backupCounters = null;
-    render();
-  }
-
-  function addCounter() {
-    counters.push({ name: "新しいカウンター", value: 0 });
-    render();
-  }
-
-  function removeCounter(i) {
-    counters.splice(i, 1);
-    render();
-  }
-
-  function moveUp(i) {
-    if (i === 0) return;
-    [counters[i - 1], counters[i]] = [counters[i], counters[i - 1]];
-    render();
-  }
-
-  function moveDown(i) {
-    if (i === counters.length - 1) return;
-    [counters[i + 1], counters[i]] = [counters[i], counters[i + 1]];
-    render();
-  }
-
-  loadFromCookie();
+document.getElementById("counters").addEventListener("pointerdown", e => {
+  const btn = e.target.closest("button");
+  if (!btn || editMode) return;
+  const i = Number(btn.dataset.i);
+  if (btn.dataset.t === "inc") counters[i].value++;
+  if (btn.dataset.t === "dec" && counters[i].value > 0) counters[i].value--;
   render();
+});
+
+function toggleEdit() {
+  backupCounters = JSON.parse(JSON.stringify(counters));
+  editMode = true;
+  render();
+}
+
+function resetCounters() {
+  counters.forEach(c => c.value = 0);
+  render();
+}
+
+function removeCounter(i) {
+  counters.splice(i, 1);
+  render();
+}
+
+function moveUp(i) {
+  if (i === 0) return;
+  [counters[i - 1], counters[i]] = [counters[i], counters[i - 1]];
+  render();
+}
+
+function moveDown(i) {
+  if (i === counters.length - 1) return;
+  [counters[i + 1], counters[i]] = [counters[i], counters[i + 1]];
+  render();
+}
+
+render();
 </script>
 </body>
 </html>
