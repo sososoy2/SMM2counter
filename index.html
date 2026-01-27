@@ -157,6 +157,10 @@ button:active {
   font-weight: bold;
   text-decoration: none;
 }
+
+.font-credit a:hover {
+  text-decoration: underline;
+}
 </style>
 </head>
 
@@ -168,7 +172,6 @@ button:active {
 
   <div id="counters" class="counter-row"></div>
 
-  <!-- 勝率表示 -->
   <div class="winrate">
     現在の勝率:
     <span id="winrate">0.00%</span>
@@ -189,6 +192,11 @@ button:active {
     <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">
       CC BY-NC-SA 3.0
     </a>.
+    <a href="https://fontstruct.com/fontstructions/show/1184080" target="_blank">
+      View on Fontstruct
+    </a>
+    <br><br>
+    ※.woff2から.ttf形式に変換して使用しています。
   </p>
 </footer>
 
@@ -242,10 +250,19 @@ function render() {
     container.appendChild(div);
   });
 
-  const winrateEl = document.getElementById("winrate");
-  if (winrateEl) {
-    winrateEl.textContent = calculateWinRate().toFixed(2) + "%";
-  }
+  document.getElementById("winrate").textContent =
+    calculateWinRate().toFixed(2) + "%";
+
+  document.getElementById("editArea").innerHTML = editMode ? `
+    <div class="edit-row">
+      <button class="reset" onclick="addCounter()">＋ カウンター追加</button>
+    </div>
+    <div class="edit-row">
+      <button class="reset" onclick="saveEdit()">変更を保存</button>
+      <button class="reset" onclick="cancelEdit()">キャンセル</button>
+      <button class="reset" onclick="resetToInitial()">初期値に戻す</button>
+    </div>
+  ` : "";
 }
 
 document.getElementById("counters").addEventListener("pointerdown", e => {
@@ -263,8 +280,32 @@ function toggleEdit() {
   render();
 }
 
+function saveEdit() {
+  editMode = false;
+  backupCounters = null;
+  render();
+}
+
+function cancelEdit() {
+  counters = JSON.parse(JSON.stringify(backupCounters));
+  editMode = false;
+  render();
+}
+
 function resetCounters() {
   counters.forEach(c => c.value = 0);
+  render();
+}
+
+function resetToInitial() {
+  if (!confirm("初期状態に戻しますか？")) return;
+  counters = JSON.parse(JSON.stringify(initialCounters));
+  editMode = false;
+  render();
+}
+
+function addCounter() {
+  counters.push({ name: "新しいカウンター", value: 0 });
   render();
 }
 
