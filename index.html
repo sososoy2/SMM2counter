@@ -95,43 +95,39 @@
       background: #888;
     }
 
-    .winrate {
-      font-size: 34px;
-      font-weight: bold;
-      margin: 30px 0;
-    }
-
-    .winrate span {
-      color: #e74c3c;
-      font-family: smm;
-      font-size: 40px;
-    }
-
     .reset {
       background: #666;
-      padding: 20px 40px;
-      border-radius: 16px;
-      margin: 10px;
-      font-size: 24px;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 20px;
+      min-width: 160px;
+    }
+
+    .edit-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
     }
 
     .font-credit {
-  margin-top: 40px;
-  padding: 12px 20px 24px;
-  font-size: 14px;
-  color: #444;
-  text-align: center;
-}
+      margin-top: 40px;
+      padding: 12px 20px 24px;
+      font-size: 14px;
+      color: #444;
+      text-align: center;
+    }
 
-.font-credit a {
-  color: #b45a20;
-  font-weight: bold;
-  text-decoration: none;
-}
+    .font-credit a {
+      color: #b45a20;
+      font-weight: bold;
+      text-decoration: none;
+    }
 
-.font-credit a:hover {
-  text-decoration: underline;
-}
+    .font-credit a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 
@@ -143,20 +139,15 @@
 
   <div id="counters" class="counter-row"></div>
 
-  <div class="winrate">
-    現在の勝率:
-    <span id="winrate">0.00%</span>
-  </div>
-
-  <div>
+  <div class="edit-row">
     <button class="reset" onclick="resetCounters()">リセット</button>
     <button class="reset" onclick="toggleEdit()">編集</button>
   </div>
 
-  <div id="addArea"></div>
+  <div id="editArea"></div>
 </div>
 
-  <footer class="font-credit">
+<footer class="font-credit">
   <p>
     Font: “Super Mario Maker Extended” by Dale Thiessen.<br>
     Licensed under
@@ -170,8 +161,9 @@
     ※.woff2から.ttf形式に変換して使用しています。
   </p>
 </footer>
+
 <script>
-  let counters = [
+  const initialCounters = [
     { name: "試合数", value: 0 },
     { name: "勝ち", value: 0 },
     { name: "本負け", value: 0 },
@@ -180,14 +172,24 @@
     { name: "ギブアップ", value: 0 }
   ];
 
+  let counters = JSON.parse(JSON.stringify(initialCounters));
   let editMode = false;
+  let backupCounters = null;
 
-  function calculateWinRate() {
-    const total = counters.find(c => c.name === "試合数")?.value || 0;
-    const wins  = counters.find(c => c.name === "勝ち")?.value || 0;
-    const invalid = counters.find(c => c.name === "無効試合")?.value || 0;
-    if (total - invalid <= 0) return 0;
-    return (wins / (total - invalid)) * 100;
+  function saveToCookie() {
+    document.cookie =
+      "smm2Counters=" +
+      encodeURIComponent(JSON.stringify(counters)) +
+      "; max-age=31536000; path=/";
+  }
+
+  function deleteCookie() {
+    document.cookie = "smm2Counters=; max-age=0; path=/";
+  }
+
+  function loadFromCookie() {
+    const m = document.cookie.match(/smm2Counters=([^;]+)/);
+    if (m) counters = JSON.parse(decodeURIComponent(m[1]));
   }
 
   function render() {
@@ -197,53 +199,81 @@
     counters.forEach((c, i) => {
       const div = document.createElement("div");
       div.className = "counter";
-
       div.innerHTML = `
         <div class="label">
           ${editMode
             ? `<input value="${c.name}" oninput="counters[${i}].name=this.value">`
             : c.name}
         </div>
-
         <div class="count">${c.value}</div>
-
         <div class="buttons">
           <button data-i="${i}" data-t="inc">+</button>
           <button data-i="${i}" data-t="dec">-</button>
         </div>
-
         ${editMode ? `
-        <div class="edit-buttons">
-          <button onclick="moveUp(${i})">⬆</button>
-          <button onclick="moveDown(${i})">⬇</button>
-          <button onclick="removeCounter(${i})">❌</button>
-        </div>
-        ` : ""}
+          <div class="edit-row edit-buttons">
+            <button onclick="moveUp(${i})">⬆</button>
+            <button onclick="moveDown(${i})">⬇</button>
+            <button onclick="removeCounter(${i})">❌</button>
+          </div>` : ""}
       `;
-
       container.appendChild(div);
     });
 
-    document.getElementById("winrate").textContent =
-      calculateWinRate().toFixed(2) + "%";
-
-    document.getElementById("addArea").innerHTML =
-      editMode ? `<button class="reset" onclick="addCounter()">＋ カウンター追加</button>` : "";
+    document.getElementById("editArea").innerHTML = editMode ? `
+      <div class="edit-row">
+        <button class="reset" onclick="addCounter()">＋ カウンター追加</button>
+      </div>
+      <div class="edit-row">
+        <button class="reset" onclick="saveEdit()">変更を保存</button>
+        <button class="reset" onclick="cancelEdit()">キャンセル</button>
+        <button class="reset" onclick="resetToInitial()">初期値に戻す</button>
+      </div>
+    ` : "";
   }
 
   document.getElementById("counters").addEventListener("pointerdown", e => {
     const btn = e.target.closest("button");
     if (!btn || editMode) return;
-
     const i = Number(btn.dataset.i);
     if (btn.dataset.t === "inc") counters[i].value++;
     if (btn.dataset.t === "dec" && counters[i].value > 0) counters[i].value--;
-
     render();
   });
 
   function toggleEdit() {
-    editMode = !editMode;
+    if (editMode) return;
+    backupCounters = JSON.parse(JSON.stringify(counters));
+    editMode = true;
+    render();
+  }
+
+  function saveEdit() {
+    saveToCookie();
+    editMode = false;
+    backupCounters = null;
+    render();
+  }
+
+  function cancelEdit() {
+    counters = JSON.parse(JSON.stringify(backupCounters));
+    editMode = false;
+    backupCounters = null;
+    render();
+  }
+
+  function resetCounters() {
+    counters.forEach(c => c.value = 0);
+    saveToCookie();
+    render();
+  }
+
+  function resetToInitial() {
+    if (!confirm("初期状態に戻しますか？")) return;
+    counters = JSON.parse(JSON.stringify(initialCounters));
+    deleteCookie();
+    editMode = false;
+    backupCounters = null;
     render();
   }
 
@@ -259,21 +289,17 @@
 
   function moveUp(i) {
     if (i === 0) return;
-    [counters[i-1], counters[i]] = [counters[i], counters[i-1]];
+    [counters[i - 1], counters[i]] = [counters[i], counters[i - 1]];
     render();
   }
 
   function moveDown(i) {
     if (i === counters.length - 1) return;
-    [counters[i+1], counters[i]] = [counters[i], counters[i+1]];
+    [counters[i + 1], counters[i]] = [counters[i], counters[i + 1]];
     render();
   }
 
-  function resetCounters() {
-    counters.forEach(c => c.value = 0);
-    render();
-  }
-
+  loadFromCookie();
   render();
 </script>
 </body>
