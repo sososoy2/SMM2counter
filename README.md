@@ -18,11 +18,11 @@ https://sososoy2.github.io/SMM2counter/obs.html
   
 ### OBS用のカウンターについて
 基本的に使い方は通常版と同じですが、配信向けに一部機能が最適化されています。
-### 導入方法  
-1. OBSを開く
-2.「ソース」の [+] ボタンを押す  
-3. [ブラウザ] を選択  
-4. URLに https://sososoy2.github.io/SMM2counter/obs.html と入力
-5. OKを押す
+### 導入方法
+1．OBSを開く  
+2．「ソース」の [+] ボタンを押す  
+3．[ブラウザ] を選択  
+4．URLに https://sososoy2.github.io/SMM2counter/obs.html と入力  
+5．OKを押す
   
 OBS用URL: https://sososoy2.github.io/SMM2counter/obs.html
