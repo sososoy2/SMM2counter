@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>OBS用SMM2 Counter</title>
+  <style>
+    @font-face {
+      font-family: "smm";
+      src: url("./fonts/smm.ttf");
+    }
+
+    body {
+      margin: 0;
+      background: #fff;
+      color: #000;
+      font-family: sans-serif;
+      padding: 5px 10px;
+    }
+
+    /* カウンター全体のレイアウト */
+    .counter-table {
+      display: inline-grid;
+      grid-template-columns: auto auto auto; 
+      align-items: center;
+      gap: 2px 12px;
+    }
+
+    .label-text {
+      font-size: 20px; /* 指定のサイズ */
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .count-number {
+      font-family: "smm", sans-serif;
+      font-size: 18px; /* 指定のサイズ */
+      text-align: right;
+      min-width: 40px;
+      line-height: 1;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 3px;
+    }
+
+    button {
+      cursor: pointer;
+      background: #fff;
+      border: 1px solid #000;
+      padding: 1px 6px;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    button:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    /* 勝率エリア */
+    .winrate-area {
+      margin-top: 8px;
+      padding-top: 5px;
+      border-top: 2px solid #000;
+      font-size: 20px; /* 指定のサイズ */
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .winrate-area span {
+      font-family: "smm";
+      font-size: 20px; /* 指定のサイズ */
+      margin-left: 8px;
+    }
+
+    /* 設定エリア */
+    .admin-panel {
+      margin-top: 15px;
+      border-top: 1px dotted #ccc;
+      padding-top: 5px;
+    }
+
+    /* 折りたたみライセンス */
+    details {
+      font-size: 10px;
+      color: #666;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+
+    details a {
+      color: #666;
+    }
+
+    input.edit-mode-input {
+      font-size: 16px;
+      width: 100px;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="counter-table" id="counter-list">
+  </div>
+
+<br>
+
+<div class="winrate-area">
+  勝率: <span id="winrate">0.00%</span>
+</div>
+
+<div class="admin-panel">
+  <button id="toggleBtn" onclick="toggleEdit()">設定</button>
+  <button onclick="resetCounters()">リセット</button>
+  
+  <div id="editControls"></div>
+
+  <details>
+    <summary>Font Credit / License</summary>
+    <p>
+      Font: “Super Mario Maker Extended” by Dale Thiessen.<br>
+      Licensed under
+      <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">
+        CC BY-NC-SA 3.0
+      </a>.
+      <a href="https://fontstruct.com/fontstructions/show/1184080" target="_blank">
+        View on Fontstruct
+      </a>
+      <br>
+      ※.woff2から.ttf形式に変換して使用しています。
+    </p>
+  </details>
+</div>
+
+<script>
+let counters = [
+  { name: "試合数", value: 0 },
+  { name: "勝ち", value: 0 },
+  { name: "本負け", value: 0 },
+  { name: "ゴール負け", value: 0 },
+  { name: "無効試合", value: 0 },
+  { name: "ギブアップ", value: 0 }
+];
+
+let editMode = false;
+
+function calculateWinRate() {
+  const total = counters.find(c => c.name === "試合数")?.value ?? 0;
+  const wins = counters.find(c => c.name === "勝ち")?.value ?? 0;
+  const invalid = counters.find(c => c.name === "無効試合")?.value ?? 0;
+  const denominator = total - invalid;
+  return denominator > 0 ? (wins / denominator) * 100 : 0;
+}
+
+function render() {
+  const list = document.getElementById("counter-list");
+  list.innerHTML = "";
+
+  counters.forEach((c, i) => {
+    const labelDiv = document.createElement("div");
+    labelDiv.className = "label-text";
+    labelDiv.innerHTML = editMode 
+      ? `<input class="edit-mode-input" value="${c.name}" oninput="counters[${i}].name=this.value">`
+      : c.name + "：";
+    
+    const countDiv = document.createElement("div");
+    countDiv.className = "count-number";
+    countDiv.textContent = c.value;
+
+    const btnDiv = document.createElement("div");
+    btnDiv.className = "btn-group";
+    btnDiv.innerHTML = `
+      <button onclick="updateCount(${i}, 1)">＋</button>
+      <button onclick="updateCount(${i}, -1)">－</button>
+      ${editMode ? `<button onclick="moveUp(${i})">▲</button><button onclick="remove(${i})">×</button>` : ""}
+    `;
+
+    list.appendChild(labelDiv);
+    list.appendChild(countDiv);
+    list.appendChild(btnDiv);
+  });
+
+  document.getElementById("winrate").textContent = calculateWinRate().toFixed(2) + "%";
+  
+  const editControls = document.getElementById("editControls");
+  if (editMode) {
+    editControls.innerHTML = `
+      <div style="margin:5px 0;">
+        <button onclick="addCounter()">項目追加</button>
+        <button onclick="toggleEdit()" style="background:#000; color:#fff;">保存</button>
+      </div>
+    `;
+    document.getElementById("toggleBtn").style.display = "none";
+  } else {
+    editControls.innerHTML = "";
+    document.getElementById("toggleBtn").style.display = "inline-block";
+  }
+}
+
+function updateCount(i, delta) {
+  counters[i].value = Math.max(0, counters[i].value + delta);
+  render();
+}
+
+function toggleEdit() {
+  editMode = !editMode;
+  render();
+}
+
+function addCounter() {
+  counters.push({ name: "新規", value: 0 });
+  render();
+}
+
+function remove(i) {
+  counters.splice(i, 1);
+  render();
+}
+
+function moveUp(i) {
+  if (i > 0) {
+    [counters[i-1], counters[i]] = [counters[i], counters[i-1]];
+    render();
+  }
+}
+
+function resetCounters() {
+  if (confirm("全リセットしますか？")) {
+    counters.forEach(c => c.value = 0);
+    render();
+  }
+}
+
+render();
+</script>
+</body>
+</html>
