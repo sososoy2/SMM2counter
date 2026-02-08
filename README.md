@@ -12,9 +12,7 @@ URL:https://sososoy2.github.io/SMM2counter/
   
   
 <img width="252" height="252" alt="Image" src="https://github.com/user-attachments/assets/1591a6bd-44bc-4abb-a0eb-e44f259e481d" />  
-  
-## OBS用のSMM2Counterはこちら  
-https://sososoy2.github.io/SMM2counter/obs.html
+
   
 ### OBS用のカウンターについて
 基本的に使い方は通常版と同じですが、配信向けに一部機能が最適化されています。
